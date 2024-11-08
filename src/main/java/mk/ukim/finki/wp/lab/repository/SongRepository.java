@@ -22,11 +22,11 @@ public class SongRepository {
     }
 
     public Artist addArtistToSong(Artist artist, Song song) {
-        // Find the song by trackId using stream filtering
+
         Song artist_song = DataHolder.songs.stream()
-                .filter(pesna -> pesna.equals(song))  // Uses the overridden equals method
+                .filter(pesna -> pesna.equals(song))
                 .findFirst()
-                .orElse(null);  // If no song found, return null
+                .orElse(null);
 
         if (artist_song != null) {
             // Add the artist to the performers list
@@ -34,7 +34,7 @@ public class SongRepository {
             return artist;  // Return the artist added
         }
 
-        return null;  // Return null if the song was not found
+        return null;
     }
 
 

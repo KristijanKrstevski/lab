@@ -28,15 +28,14 @@ public class SongListServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Retrieve all songs
-        // Use WebExchange to interact with Thymeleaf
+
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())
                 .buildExchange(req, resp);
 
         WebContext context = new WebContext(webExchange);
         context.setVariable("song", songService.listSongs());
-        // Render the song list view
+
         springTemplateEngine.process("listSongs.html", context, resp.getWriter());
     }
 
