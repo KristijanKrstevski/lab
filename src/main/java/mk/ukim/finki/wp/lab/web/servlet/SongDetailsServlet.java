@@ -26,16 +26,8 @@ public class SongDetailsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String trackId = req.getParameter("trackId");
-
-        // Get the song by trackId
-        Song song = songService.findByTrackId(trackId);
-
-        if (song == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Song not found");
-            return;
-        }
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        Song song = (Song)req.getSession().getAttribute("selectedSong");
 
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())
@@ -44,7 +36,8 @@ public class SongDetailsServlet extends HttpServlet {
         WebContext context = new WebContext(webExchange);
         context.setVariable("song", song);
 
-        // Render the song details view
-        springTemplateEngine.process("songDetails.html", context, resp.getWriter());
+        if (song != null){
+            springTemplateEngine.process("songDetails.html", context, resp.getWriter());
+        }
     }
 }

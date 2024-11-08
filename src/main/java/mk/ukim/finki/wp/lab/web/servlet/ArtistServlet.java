@@ -31,7 +31,7 @@ public class ArtistServlet extends HttpServlet{
 
     @Override
     public void doGet (HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        String trackId = req.getParameter("trackId");
+        String trackId = (String) req.getSession().getAttribute("trackId");
 
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())

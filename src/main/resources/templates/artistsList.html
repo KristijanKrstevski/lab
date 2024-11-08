@@ -26,7 +26,7 @@
     <form th:action="@{/artist}" method="post">
         <div th:each="artist : ${artists}">
             <input type="radio" name="artistId" th:value="${artist.id}" />
-            <label th:text="${artist.name}"></label><br/>
+            <label th:text="'Name: '+${artist.firstName}+ ' '+ ${artist.lastName}+ ' '+ ${artist.id}+ ' '+ ${artist.bio}"></label><br/>
         </div>
         <input type="submit" value="Add artist">
     </form>
@@ -35,7 +35,7 @@
     <table>
         <tr>
             <td><b>Track Id</b></td>
-<!--            <td th:text="${trackId}"></td>-->
+            <td th:text="${trackId}"></td>
         </tr>
     </table>
 </aside>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="utf-8">
     <title>Song Details</title>
@@ -11,9 +11,13 @@
 <section>
     <h2>Genre: <span th:text="${song.genre}"></span></h2>
     <h2>Release Year: <span th:text="${song.releaseYear}"></span></h2>
+    <h2><span th:text="${song}"></span></h2>
     <h2>Performers:</h2>
     <ul>
-        <li th:each="performer : ${song.performers}" th:text="${performer.name}"></li>
+        <li th:each="performer : ${song.performers}">
+            <span th:text="${performer.firstName} + ' ' + ${performer.lastName}">Artist Name</span> -
+            <em th:text="${performer.bio}">Bio</em>
+        </li>
     </ul>
 </section>
 </body>
