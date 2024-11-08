@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="utf-8">
     <title>Add new Performer to Song</title>
@@ -23,10 +23,9 @@
 </header>
 <section>
     <h2>Select artist:</h2>
-    <form action="/artist" method="post">
-<!--        <input type="hidden" name="trackId" th:value="${song.trackId}" />-->
-        <div th:each="artist : ${artist}">
-            <input type="radio" name="artistId" th:value="${artist}" />
+    <form th:action="@{/artist}" method="post">
+        <div th:each="artist : ${artists}">
+            <input type="radio" name="artistId" th:value="${artist.id}" />
             <label th:text="${artist.name}"></label><br/>
         </div>
         <input type="submit" value="Add artist">
@@ -36,7 +35,7 @@
     <table>
         <tr>
             <td><b>Track Id</b></td>
-<!--            <td th:text="${song.trackId}"></td>-->
+<!--            <td th:text="${trackId}"></td>-->
         </tr>
     </table>
 </aside>

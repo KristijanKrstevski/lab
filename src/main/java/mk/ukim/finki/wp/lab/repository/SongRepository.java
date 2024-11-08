@@ -22,19 +22,20 @@ public class SongRepository {
     }
 
     public Artist addArtistToSong(Artist artist, Song song) {
-        for (Song s : DataHolder.songs) {
-            if (s.getTrackId().equals(song.getTrackId())) {
-                s.addPerformer(artist);
-                save(s);  // Save the song after modifying it
-                return artist;
-            }
+        // Find the song by trackId using stream filtering
+        Song artist_song = DataHolder.songs.stream()
+                .filter(pesna -> pesna.equals(song))  // Uses the overridden equals method
+                .findFirst()
+                .orElse(null);  // If no song found, return null
+
+        if (artist_song != null) {
+            // Add the artist to the performers list
+            artist_song.getPerformers().add(artist);
+            return artist;  // Return the artist added
         }
-        return null;
+
+        return null;  // Return null if the song was not found
     }
 
-    // New method to save the song list after modification
-    private void save(Song song) {
-        // In your case, you may just update the list in DataHolder
-        DataHolder.songs = DataHolder.songs;  // For now, assume this is updating
-    }
+
 }

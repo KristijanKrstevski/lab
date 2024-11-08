@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="utf-8">
     <title>Songs Homepage - Welcome to My Music Store</title>
@@ -16,7 +16,7 @@
 </header>
 <main>
     <h2>Choose a song:</h2>
-    <form action="/artist" method="get">
+    <form th:action="@{/listSongs}" method="post">
         <div th:each="song : ${song}">
             <input type="radio" name="trackId" th:value="${song.trackId}" th:text="'Title: ' + ${song.title} + ', Genre: ' + ${song.genre} + ', Release Year: ' + ${song.releaseYear}"></input><br/>
         </div>

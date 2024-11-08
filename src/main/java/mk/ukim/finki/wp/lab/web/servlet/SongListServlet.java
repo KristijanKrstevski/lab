@@ -27,10 +27,8 @@ public class SongListServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Retrieve all songs
-
-
         // Use WebExchange to interact with Thymeleaf
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())
@@ -38,9 +36,16 @@ public class SongListServlet extends HttpServlet {
 
         WebContext context = new WebContext(webExchange);
         context.setVariable("song", songService.listSongs());
-
         // Render the song list view
         springTemplateEngine.process("listSongs.html", context, resp.getWriter());
+    }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String trackId = req.getParameter("trackId");
+        req.getSession().setAttribute("trackId", trackId);
+        resp.sendRedirect("/artist");
     }
 }
 

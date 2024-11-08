@@ -21,9 +21,4 @@ public class Song {
         performers = new ArrayList<>();
     }
 
-
-    public void addPerformer(Artist performe)
-    {
-        performers.add(performe);
-    }
 }

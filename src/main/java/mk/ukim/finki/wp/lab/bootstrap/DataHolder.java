@@ -1,6 +1,8 @@
 package mk.ukim.finki.wp.lab.bootstrap;
 
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import mk.ukim.finki.wp.lab.model.Artist;
 import mk.ukim.finki.wp.lab.model.Song;
 import org.springframework.stereotype.Component;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+
 public class DataHolder {
     public static List<Artist> artists = new ArrayList<>();
     public static List<Song> songs=new ArrayList<>();

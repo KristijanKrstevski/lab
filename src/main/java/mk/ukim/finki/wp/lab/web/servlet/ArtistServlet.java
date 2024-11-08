@@ -1,8 +1,7 @@
 package mk.ukim.finki.wp.lab.web.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mk.ukim.finki.wp.lab.model.Artist;
@@ -15,61 +14,52 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "ArtistServlet", urlPatterns = "/artist")
-public class ArtistServlet extends HttpServlet {
+public class ArtistServlet extends HttpServlet{
 
     private final ArtistService artistService;
     private final SongService songService;
     private final SpringTemplateEngine springTemplateEngine;
 
-    public ArtistServlet(ArtistService artistService, SongService songService, SpringTemplateEngine springTemplateEngine) {
+
+    public ArtistServlet(ArtistService artistService, SpringTemplateEngine springTemplateEngine, SongService songService) {
         this.artistService = artistService;
-        this.songService = songService;
         this.springTemplateEngine = springTemplateEngine;
+        this.songService = songService;
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String trackId = req.getParameter("trackId");
-//
-//        // Get the song by trackId
-//        Song songs = songService.findByTrackId(trackId);
-//
-//        if (songs == null) {
-//            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Song not found");
-//            return;
-//        }
+    public void doGet (HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        String trackId = req.getParameter("trackId");
 
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())
                 .buildExchange(req, resp);
 
         WebContext context = new WebContext(webExchange);
-        //context.setVariable("song", songs);
-        context.setVariable("artist", artistService.listArtists());
+        context.setVariable("artists", artistService.listArtists());
+        context.setVariable("trackId", trackId);
 
-        // Render the artist selection view
         springTemplateEngine.process("artistsList.html", context, resp.getWriter());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String trackId = req.getParameter("trackId");
-        String artistId = req.getParameter("artistId");
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        String artistIdString = req.getParameter("artistId");
+        String trackId = (String) req.getSession().getAttribute("trackId");
 
-        Song song = songService.findByTrackId(trackId);
-        Artist artist = artistService.findById(Long.parseLong(artistId));
+        if (artistIdString != null && trackId != null){
+            Long artistId = Long.parseLong(artistIdString);
 
-        if (song != null && artist != null) {
-            song.addPerformer(artist); // Add artist to song
-            songService.addArtistToSong(artist,song); // Save the updated song
+            Artist artist = artistService.findById(artistId);
+            Song song = songService.findByTrackId(trackId);
+
+            if (artist != null && song != null){
+                songService.addArtistToSong(artist, song);
+                req.getSession().setAttribute("selectedSong", song);
+            }
         }
-
-        // Redirect to the song details page
-        resp.sendRedirect("/songDetails?trackId=" + trackId);
+        resp.sendRedirect("/songDetails");
     }
 }
-
-
